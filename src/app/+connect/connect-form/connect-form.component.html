@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="jumbotron">
+    <h2>Join Group Watch</h2>
+    <form #form="ngForm" (submit)="connect()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input [(ngModel)]="username"
+          type="text" 
+          class="form-control" 
+          id="username"
+          name="username" 
+          placeholder="Mr.Awesome"
+          required
+        >
+      </div>
+      <button (click)="connect()"
+        [disabled]="!form.valid"
+        type="button" 
+        class="btn btn-primary pull-right"
+      >
+        Connect
+      </button>
+    </form>
+  </div>
+</div>
