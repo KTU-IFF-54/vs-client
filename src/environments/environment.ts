@@ -6,5 +6,5 @@ import { IEnvironment } from '../app/environment';
 
 export const environment: IEnvironment = {
   production: false,
-  host: 'localhost/'
+  host: 'localhost:5000/'
 };

@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { Actions } from '../../services/vs-socket';
+import { VSApiService } from '../../services/vs-api.service';
 import { AppComponent } from '../../app.component';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
@@ -7,24 +10,54 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./view-page.component.scss']
 })
 
-export class ViewPageComponent{
+export class ViewPageComponent implements OnInit {
   @ViewChild('video')
   private video: ElementRef;
   private isPlaying: boolean = false;
 
-  constructor() { }
- /* ngOnInit() {
+  constructor(private _router: Router, private _api: VSApiService) { }
+
+  public ngOnInit() {
+    if (!this._api.connection) {
+      this._router.navigate(['connect']);
+      return;
+    }
+    this._api.connection.message
+      .filter(_ => _.data.Action === Actions.Play)
+      .subscribe(_ => {
+        this.playVideo();
+      });
+    this._api.connection.message
+      .filter(_ => _.data.Action === Actions.Pause)
+      .subscribe(_ => {
+        this.pauseVideo();
+      });
+    this._api.connection.message
+      .filter(_ => _.data.Action === Actions.Rewind)
+      .subscribe(_ => {
+        this.rewindVideo();
+      });
   }
-*/
-  playVideo(){
+
+  public play() {
+    this._api.connection.send(Actions.Play);
+  }
+  public pause() {
+    this._api.connection.send(Actions.Pause);
+  }
+  public rewind() {
+    this._api.connection.send(Actions.Rewind);
+  }
+
+  private playVideo(){
     (<HTMLVideoElement>this.video.nativeElement).play();
     this.isPlaying = true;
   }
-  pauseVideo(){
+  private pauseVideo(){
     (<HTMLVideoElement>this.video.nativeElement).pause();
     this.isPlaying = false;
   }
-  rewindVideo(){
+  private rewindVideo(){
     (<HTMLVideoElement>this.video.nativeElement).currentTime = 0;
   }
 }

@@ -1,3 +1,4 @@
+import { VSApiService } from './services/vs-api.service';
 import { ViewModule } from './+view/view.module';
 import { AppRoutes } from './app.routes';
 import { RouterModule } from '@angular/router';
@@ -23,7 +24,7 @@ import { AppComponent } from './app.component';
     ViewModule,
     RouterModule.forRoot(AppRoutes)
   ],
-  providers: [],
+  providers: [VSApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
