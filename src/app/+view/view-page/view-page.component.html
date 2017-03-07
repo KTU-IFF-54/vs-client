@@ -1,3 +1,16 @@
 <div class="background">
-
+    <div id="container">
+        <video id="video" #video src="https://r5---sn-4g5ednee.c.drive.google.com/videoplayback?id=00a9713adba4a900&itag=18&source=webdrive&requiressl=yes&ttl=transient&mm=30&mn=sn-4g5ednee&ms=nxu&mv=m&pl=18&sc=yes&ei=4rq9WK7iD4T9qQW2yZB4&mime=video/mp4&lmt=1488828824261373&mt=1488829046&ip=158.129.22.177&ipbits=0&expire=1488843554&cp=QVJNWklfUlVTRVhNOnZieFVxYVFid1U0&sparams=ip,ipbits,expire,id,itag,source,requiressl,ttl,mm,mn,ms,mv,pl,sc,ei,mime,lmt,cp&signature=10F28B6AE57CDD22C76C63E0A82145175EF0402A.54D71382C2D09BCDA1A7B45DB38B6805D2A25169&key=ck2&app=texmex&driveid=0B7XRKLR8NM4MeGJrdEVYX3RyY1E&cpn=4NSoUARAEoaO0OGk&c=WEB&cver=1.20170227" width="auto" height="auto">
+        </video>
+        <div id="buttons-placement">
+            <button *ngIf="!isPlaying" class="btn btn-primary" (click)="playVideo();"><span class="fa fa-play-circle"></span></button>
+            <button *ngIf="isPlaying" class="btn btn-primary" (click)="pauseVideo();"><span class="fa fa-pause-circle"></span></button>
+            <button class="btn btn-primary" (click)="rewindVideo();">Back to beginning</button> 
+            <!--<div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>          -->
+            <p class="ngb-progressbar" type="success" value="25"></p>
+            
+        </div>
+    </div>
 </div>
