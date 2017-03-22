@@ -1,4 +1,3 @@
-import { environment } from '../environments/environment';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  private data = environment.host;
-}
+export class AppComponent {}

@@ -1,4 +1,3 @@
-import { environment } from '../environment';
 import { Observable } from 'rxjs';
 import { connect } from 'tls';
 import { Http } from '@angular/http';
@@ -7,7 +6,7 @@ import { VSSocketConnection } from './vs-socket';
 
 @Injectable()
 export class VSApiService {
-
+  public static readonly Host = window.location.host;
   public static readonly ApiPath = 'api/v1.0/';
   public static readonly SocketPath = 'connection/';
 
@@ -22,10 +21,9 @@ export class VSApiService {
 
   public connect(name: string): Observable<VSSocketConnection> {
     return VSSocketConnection
-      .init('ws://localhost:5000/connection', name)
+      .init(`ws://${VSApiService.Host}/${VSApiService.SocketPath}`, name)
       .do(client => {
         this._connection = client;
       });
   }
-
 }
