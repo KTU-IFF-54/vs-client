@@ -14,7 +14,8 @@ export class ConnectFormComponent {
 
   constructor(
     private _router: Router,
-    private _api: VSApiService) { }
+    private _api: VSApiService
+  ) { }
 
   private connect() {
     // TODO loding animation here
