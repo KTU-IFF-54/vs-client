@@ -4,25 +4,37 @@ import { Http } from '@angular/http';
 import { EventEmitter, Injectable } from '@angular/core';
 
 export interface IVSSocketData<T> {
-  readonly client: VSSocketConnection;
+  readonly client: IVSSocketConnection;
   readonly data: T;
 }
 
-export class VSSocketConnection {
-  private client: WebSocket;
+export type Callback<Data> = (data: IVSSocketData<Data>) => void;
 
-  private _id: string;
+export interface IVSSocketConnection {
+  readonly id: string;
+  readonly name: string;
+  message: Observable<IVSSocketData<IVSSocketMessage>>;
+  error: Observable<IVSSocketData<ErrorEvent>>;
+
+  send(action: string, params?): void;
+  on(actionSelector: (keys: typeof Actions) => string, callback: Callback<IVSSocketMessage>): this;
+  onError(callback: Callback<ErrorEvent>): this;
+}
+
+export class VSSocketConnection implements IVSSocketConnection {
   public readonly name: string;
-
-  private open = new EventEmitter<VSSocketConnection>();
   public message: Observable<IVSSocketData<IVSSocketMessage>>;
   public error: Observable<IVSSocketData<ErrorEvent>>;
+
+  private _id: string;
+  private client: WebSocket;
+  private open = new EventEmitter<IVSSocketConnection>();
 
   public get id() {
     return this._id;
   }
 
-  public static init(url: string, name: string): Observable<VSSocketConnection> {
+  public static init(url: string, name: string): Observable<IVSSocketConnection> {
     const client = new VSSocketConnection(url, name);
     return client.open;
   }
@@ -33,13 +45,24 @@ export class VSSocketConnection {
     this.setup();
   }
 
-  public send(action: string, params?: {[key: string]: any}) {
+  public send(action: string, params?) {
     this.client.send(JSON.stringify(<IVSSocketMessage> {
       SenderId: this.id,
       SenderName: this.name,
       Action: action,
       Params: params
     }));
+  }
+
+  public on(actionSelector: (keys: typeof Actions) => string, callback: Callback<IVSSocketMessage>): this {
+      this.message
+        .filter(_ => _.data.Action === actionSelector(Actions))
+        .subscribe(callback);
+      return this;
+  }
+
+  public onError(callback: Callback<ErrorEvent>): this {
+      throw new Error('Not implemented yet.');
   }
 
   private setup() {
@@ -51,7 +74,7 @@ export class VSSocketConnection {
     this.message.filter(_ => _.data.Action === Actions.Connected)
       .take(1)
       .subscribe(_ => {
-        _.client._id = _.data.SenderId;
+        (<VSSocketConnection>_.client)._id = _.data.SenderId;
         this.open.emit(_.client);
       });
     this.error = Observable.fromEvent<ErrorEvent>(this.client, 'error')

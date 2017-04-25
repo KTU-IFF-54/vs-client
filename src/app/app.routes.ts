@@ -1,14 +1,21 @@
-import { ViewPageComponent } from './+view/view-page/view-page.component';
+import { VideoPlayerComponent } from './video-player/video-player.component';
+import { SessionComponent } from './session/session.component';
+import { LobbyComponent } from './lobby/lobby.component';
+import { ConnectComponent } from './connect';
 import { Routes } from '@angular/router';
-import { ConnectFormComponent } from './+connect';
 
 export const AppRoutes: Routes = [
-  { path: 'connect', component: ConnectFormComponent },
-  { path: 'view', component: ViewPageComponent },
+  { path: 'connect', component: ConnectComponent },
   {
-    path: '',
-    redirectTo: '/connect',
-    pathMatch: 'full'
+    path: 'lobby', component: LobbyComponent,
   },
-  { path: '**', redirectTo: '/' }
+  {
+    path: 'session/:id', component: SessionComponent,
+    children: [
+      {
+        path: 'direct', component: VideoPlayerComponent
+      }
+    ]
+  },
+  { path: '**', redirectTo: '/connect' }
 ];
