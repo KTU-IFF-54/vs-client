@@ -17,8 +17,10 @@
       "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
-      "prefix": "app",
+      "prefix": "vs",
       "styles": [
+        "assets/css/font-awesome.min.css",
+        "../node_modules/videogular2/fonts/videogular.css",
         "styles.css"
       ],
       "scripts": [],
